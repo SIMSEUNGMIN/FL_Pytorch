@@ -62,5 +62,6 @@ class Config(object):
 
 
 if __name__ == "__main__":
-    config = Config("configs/MNIST/mnist.json")
+    # config = Config("configs/MNIST/mnist.json")
+    config = Config("configs/FashionMNIST/fashionmnist.json")
     print(config.data.IID)

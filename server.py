@@ -86,6 +86,7 @@ class Server:
 
 
 if __name__ == "__main__":
-    config = Config("configs/MNIST/mnist.json")
+    # config = Config("configs/MNIST/mnist.json")
+    config = Config("configs/FashionMNIST/fashionmnist.json") #for FashionMNIST
     server = Server(config)
     server.run()
