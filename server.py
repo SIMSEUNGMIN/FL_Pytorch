@@ -6,6 +6,7 @@ from clients import Client
 import copy
 import numpy as np
 
+import csv
 import matplotlib.pyplot as plt
 
 class Server:
@@ -52,7 +53,13 @@ class Server:
             # broadcast glob weights
             self.clients.update(glob_weights)
         
+        # for data processing
+        self.array_train_acc = np.round(self.array_train_acc, 3)
+        self.array_test_acc = np.round(self.array_test_acc, 3)
+        self.array_test_loss = np.round(self.array_test_loss, 3)
 
+        # for data visualization
+        self.write_file()
         self.show_graph()
     
     def fed_avg(self, info):
@@ -97,23 +104,60 @@ class Server:
         total_samples = sum(info["len"])
         return corrects / total_samples
 
+    def write_file(self):
+        f = open("C:/Users/user/Desktop/AlexNet/FashionMNIST/IID/IID_1000R_RESULT.csv", "w", newline="")
+        writer = csv.writer(f)
+        writer.writerow(['array_train_acc'])
+        writer.writerow(self.array_train_acc)
+        writer.writerow(['array_test_acc'])
+        writer.writerow(self.array_test_acc)
+        writer.writerow(['array_test_loss'])
+        writer.writerow(self.array_test_loss)
+        f.close()
+        
+
     def show_graph(self):
+
+        # for test printing
         # print("array_train_acc : ", self.array_train_acc)
         # print("array_test_acc : ", self.array_test_acc)
         # print("array_test_loss : ", self.array_test_loss)
 
-        fig, acc_graph = plt.subplots()
+        # setting graph shape
+        fig, axes = plt.subplots(2, 2)
+        fig.set_size_inches((15,15))
+        plt.subplots_adjust(wspace=0.3, hspace=0.3)
 
-        acc_graph.plot(self.array_train_acc, 'g', label='train_accuracy')
-        acc_graph.plot(self.array_test_acc, 'r', label='test_accuracy')
-        acc_graph.set_xlabel('round (1 round = 5 epochs)')
-        acc_graph.set_ylabel('accuracy')
-        acc_graph.legend(loc='lower left')
+        plt.suptitle('AlexNet/FashionMNIST/IID/lr=0.01', fontsize=15)
 
-        # loss_graph.plot(self.array_test_loss, 'r', label='test_loss')
-        # loss_graph.set_xlabel('round (1 round = 5 epochs)')
-        # loss_graph.set_ylabel('loss')
-        # loss_graph.legend(loc='lower left')
+        # train accuracy graph
+        # axes[0,0].set_title('AlexNet/FashionMNIST/NON-IID/lr=0.01')
+        axes[0,0].plot(self.array_train_acc, 'g', label='train_accuracy')
+        axes[0,0].set_xlabel('round (1 round = 5 epochs)')
+        axes[0,0].set_ylabel('accuracy')
+        axes[0,0].legend(loc='lower left')
+
+        # test accuracy graph
+        # axes[0,1].set_title('AlexNet/FashionMNIST/NON-IID/lr=0.01')
+        axes[0,1].plot(self.array_test_acc, 'r', label='test_accuracy')
+        axes[0,1].set_xlabel('round (1 round = 5 epochs)')
+        axes[0,1].set_ylabel('accuracy')
+        axes[0,1].legend(loc='lower left')
+
+        # train and test accuracy graph
+        # axes[1,0].set_title('AlexNet_FashionMNIST_NON-IID_lr=0.01')
+        axes[1,0].plot(self.array_train_acc, 'g', label='train_accuracy')
+        axes[1,0].plot(self.array_test_acc, 'r', label='test_accuracy')
+        axes[1,0].set_xlabel('round (1 round = 5 epochs)')
+        axes[1,0].set_ylabel('accuracy')
+        axes[1,0].legend(loc='lower left')
+        
+        # test loss graph
+        # axes[1,1].set_title('AlexNet/FashionMNIST/NON-IID/lr=0.01')
+        axes[1,1].plot(self.array_test_loss, 'b', label='test_loss')
+        axes[1,1].set_xlabel('round (1 round = 5 epochs)')
+        axes[1,1].set_ylabel('loss')
+        axes[1,1].legend(loc='lower left')
 
         plt.show()
 

@@ -8,10 +8,10 @@
         "partition": {
             "size": 600
         },
-        "IID": false
+        "IID": true
     },
     "federated_learning": {
-        "rounds": 50,
+        "rounds": 1000,
         "target_accuracy": 0.99,
         "task": "train",
         "epochs": 5,
