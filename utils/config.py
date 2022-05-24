@@ -19,6 +19,7 @@ class Config(object):
 
     def extract(self):
         config = self.config
+        print("config : ", config) # check
 
         # -- Clients --
         fields = ['total', 'fraction', 'label_distribution',
@@ -28,7 +29,7 @@ class Config(object):
                   for i, field in enumerate(fields)]
         self.clients = namedtuple('clients', fields)(*params)
 
-        assert 0 < self.clients.fraction < 1
+        assert 0 < self.clients.fraction <= 1 # for only one client
 
         # -- Data --
         fields = ['loading', 'partition', 'IID', 'bias', 'shard']
@@ -64,4 +65,5 @@ class Config(object):
 if __name__ == "__main__":
     # config = Config("configs/MNIST/mnist.json")
     config = Config("configs/FashionMNIST/fashionmnist.json")
+    # config = Config("configs/CIFAR-10/cifar-10.json")
     print(config.data.IID)

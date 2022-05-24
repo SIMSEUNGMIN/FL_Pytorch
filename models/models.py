@@ -7,13 +7,16 @@ def get_model(dataset_name):
     #     return Mnist_Net()
     if dataset_name == "FashionMNIST":
         return Mnist_Net()
+    # if dataset_name == "CIFAR-10":
+    #     return Mnist_Net()
 
 
 class Mnist_Net(nn.Module):
     # AlexNet
     def __init__(self):
         super(Mnist_Net, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels=1, out_channels=96, kernel_size=11, stride=4)
+        self.conv1 = nn.Conv2d(in_channels=1, out_channels=96, kernel_size=11, stride=4) #for gray scale
+        # self.conv1 = nn.Conv2d(in_channels=3, out_channels=96, kernel_size=11, stride=4)
         self.conv2 = nn.Conv2d(in_channels=96, out_channels=256, kernel_size=5, padding=2)
         self.conv3 = nn.Conv2d(in_channels=256, out_channels=384, kernel_size=3, padding=1)
         self.conv4 = nn.Conv2d(in_channels=384, out_channels=384, kernel_size=3, padding=1)
@@ -45,8 +48,6 @@ class Mnist_Net(nn.Module):
         x = F.log_softmax(self.fc3(x), dim=1)
         
         return x 
-
-
 
     # 모델 참조 https://jschang.tistory.com/4
     # def __init__(self):

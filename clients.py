@@ -62,6 +62,7 @@ class Client:
             epoch_acc = int(running_corrects) / len(dataloaders.dataset)
 
             logging.debug('User {}: {} Loss: {:.4f} Acc: {:.4f}'.format(user_id, "training", epoch_loss, epoch_acc))
+        
         # need be locked
         lock = threading.Lock()
         lock.acquire()
@@ -89,6 +90,9 @@ class Client:
                    selected_client]
         [t.start() for t in threads]
         [t.join() for t in threads]
+        
+        # self.local_train(user_id=selected_client[0], dataloaders=self.dataloaders[selected_client[0]])
+
         # training details
         info = {"weights": self.weights, "loss": self.epoch_loss, "corrects": self.running_corrects,
                 'len': self.len_dataset}
